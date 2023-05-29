@@ -44,6 +44,7 @@ const AuthForm = () => {
         if (res.ok) {
           res.json().then((data) => {
             ctx.loginHandler(data.idToken);
+
             history.replace("/profile");
             setLoader(false);
           });

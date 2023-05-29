@@ -2,12 +2,16 @@ import { useState } from "react";
 import Context from "./Context";
 
 const ContextProvider = (props) => {
-  const [idToken, setToken] = useState(null);
+  const existToken = localStorage.getItem("token");
+  const [idToken, setToken] = useState(existToken);
+
   const loginHandler = (id) => {
     setToken(id);
+    localStorage.setItem("token", id);
   };
   const logoutHandler = () => {
     setToken(null);
+    localStorage.removeItem("token");
   };
   const context = {
     idToken: idToken,
