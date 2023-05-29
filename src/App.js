@@ -9,6 +9,12 @@ import Context from "./components/Store/Context";
 
 function App() {
   const authCtx = useContext(Context);
+  if (authCtx.isLoggedIn) {
+    setTimeout(() => {
+      authCtx.logoutHandler();
+    }, 300000);
+  }
+
   return (
     <Layout>
       <Switch>
