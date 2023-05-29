@@ -1,8 +1,11 @@
 import { useState, useRef, useContext } from "react";
 import classes from "./AuthForm.module.css";
 import Context from "../Store/Context";
+import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 const AuthForm = () => {
+  const history = useHistory();
   const emailInputRef = useRef();
   const passwordInputRef = useRef();
 
@@ -41,6 +44,7 @@ const AuthForm = () => {
         if (res.ok) {
           res.json().then((data) => {
             ctx.loginHandler(data.idToken);
+            history.replace("/profile");
             setLoader(false);
           });
         } else {
@@ -79,7 +83,7 @@ const AuthForm = () => {
   return (
     <section className={classes.auth}>
       <h1>{isLogin ? "Login" : "Sign Up"}</h1>
-      <form onSubmit={submitHandler}>
+      <form>
         <div className={classes.control}>
           <label htmlFor="email">Your Email</label>
           <input type="email" id="email" required ref={emailInputRef} />
@@ -95,7 +99,12 @@ const AuthForm = () => {
         </div>
         {loader && <p>Sending request...</p>}
         <div className={classes.actions}>
-          <button>{isLogin ? "Login" : "Create Account"}</button>
+          <Link to="/profile">
+            <button onClick={submitHandler}>
+              {isLogin ? "Login" : "Create Account"}
+            </button>
+          </Link>
+
           <button
             type="button"
             className={classes.toggle}
