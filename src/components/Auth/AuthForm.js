@@ -22,6 +22,32 @@ const AuthForm = () => {
     //add validation
 
     if (isLogin) {
+      fetch(
+        "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyAlZyDYZo4QLVRkyBpqcRzuhBHMvTFQFgQ",
+        {
+          method: "POST",
+          body: JSON.stringify({
+            email: enteredEmail,
+            password: enteredPassword,
+            returnSecureToken: true,
+          }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      ).then((res) => {
+        if (res.ok) {
+          res.json().then((data) => {
+            console.log(data.idToken);
+            setLoader(false);
+          });
+        } else {
+          res.json().then((data) => {
+            alert(data.error.message);
+            setLoader(false);
+          });
+        }
+      });
     } else {
       fetch(
         "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyAlZyDYZo4QLVRkyBpqcRzuhBHMvTFQFgQ",
@@ -40,8 +66,7 @@ const AuthForm = () => {
         if (res.ok) {
         } else {
           res.json().then((data) => {
-            alert("EMAIL_EXISTS");
-            console.log(data);
+            alert(data.error.message);
             setLoader(false);
           });
         }
